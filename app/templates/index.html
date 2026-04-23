@@ -31,6 +31,7 @@
             Sightings
             <span id="sighting-count" class="count-chip" hidden>0</span>
           </button>
+          <a href="/logout" class="signout-btn">Sign out</a>
         </div>
       </header>
 
@@ -59,7 +60,7 @@
               </select>
             </div>
             <div id="stream-url-field" hidden>
-              <input id="stream-url" class="hud-input" type="text" placeholder="rtsp://…" />
+              <input id="stream-url" class="hud-input" type="text" placeholder="rtsp://…" value="{{ default_stream_url }}" />
             </div>
           </div>
           <button id="source-toggle" class="start-btn">Start</button>

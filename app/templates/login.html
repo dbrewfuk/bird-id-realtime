@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bird ID — Sign In</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body class="login-body">
+    <div class="login-card">
+      <div class="login-wordmark">
+        <svg class="wordmark-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 3L12.5 8.5C11 6 8.5 4.5 6 5C3 5.5 1.5 8 2 11C2.5 14 5 15.5 7.5 15C7.5 15 8 17 10 18.5C12 20 15 20 17 18.5L21 3Z"/>
+        </svg>
+        Bird ID
+      </div>
+
+      {% if error %}
+        <p class="login-error" role="alert">{{ error }}</p>
+      {% endif %}
+
+      <form method="post" action="/login">
+        <div class="login-field">
+          <label class="login-label" for="password">Password</label>
+          <input
+            class="login-input"
+            type="password"
+            id="password"
+            name="password"
+            autofocus
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <button class="login-btn" type="submit">Sign in</button>
+      </form>
+    </div>
+  </body>
+</html>

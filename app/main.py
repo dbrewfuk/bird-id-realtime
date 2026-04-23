@@ -2,14 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from starlette.requests import Request
 
+from app.auth import COOKIE_MAX_AGE, COOKIE_NAME, AuthMiddleware, make_session_cookie, verify_session_cookie
 from app.config import settings
 from app.services.bird_classifier import classifier
 from app.services.bird_detector import detector
@@ -20,6 +21,7 @@ from app.services.temporal_smoother import smoother
 BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(title=settings.app_name)
+app.add_middleware(AuthMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -51,12 +53,51 @@ def startup_event() -> None:
         pass
 
 
+@app.get("/login", response_class=HTMLResponse)
+async def login_get(request: Request) -> HTMLResponse:
+    token = request.cookies.get(COOKIE_NAME)
+    if token and verify_session_cookie(token):
+        return RedirectResponse(url="/", status_code=302)
+    return templates.TemplateResponse(request, "login.html", {"request": request, "error": None})
+
+
+@app.post("/login")
+async def login_post(request: Request, password: str = Form(...)):
+    if password == settings.app_password:
+        response = RedirectResponse(url="/", status_code=302)
+        response.set_cookie(
+            key=COOKIE_NAME,
+            value=make_session_cookie(),
+            httponly=True,
+            samesite="lax",
+            max_age=COOKIE_MAX_AGE,
+        )
+        return response
+    return templates.TemplateResponse(
+        request,
+        "login.html",
+        {"request": request, "error": "Wrong password — try again."},
+        status_code=200,
+    )
+
+
+@app.get("/logout")
+async def logout() -> RedirectResponse:
+    response = RedirectResponse(url="/login", status_code=302)
+    response.delete_cookie(COOKIE_NAME)
+    return response
+
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(
         request,
         "index.html",
-        {"request": request, "frame_interval_ms": settings.frame_min_interval_ms},
+        {
+            "request": request,
+            "frame_interval_ms": settings.frame_min_interval_ms,
+            "default_stream_url": settings.default_stream_url,
+        },
     )
 
 

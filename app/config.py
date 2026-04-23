@@ -7,6 +7,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "Bird ID Realtime"
+    app_password: str = "birdwatcher"
+    secret_key: str = "change-me-in-production"
+    default_stream_url: str = ""
     model_repo: str = "dennisjooo/Birds-Classifier-EfficientNetB2"
     model_filename: str = "model.onnx"
     detector_model_url: str = (
