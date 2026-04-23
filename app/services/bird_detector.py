@@ -53,7 +53,11 @@ class BirdDetector:
             model_path = settings.model_dir / settings.detector_model_filename
 
             if not model_path.exists() or self._looks_like_lfs_pointer(model_path):
-                self._export_yolov8(model_path)
+                if hasattr(settings, "detector_model_url") and settings.detector_model_url:
+                    import urllib.request
+                    urllib.request.urlretrieve(settings.detector_model_url, model_path)
+                else:
+                    self._export_yolov8(model_path)
 
             self._session = ort.InferenceSession(
                 str(model_path),

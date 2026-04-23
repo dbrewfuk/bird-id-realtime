@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     app_name: str = "Bird ID Realtime"
     model_repo: str = "dennisjooo/Birds-Classifier-EfficientNetB2"
     model_filename: str = "model.onnx"
+    detector_model_url: str = (
+        "https://github.com/dbrewfuk/bird-id-realtime/releases/download/v0.1.0/yolov8n.onnx"
+    )
     detector_model_filename: str = "yolov8n.onnx"
     confidence_threshold: float = 0.18
     detection_confidence_threshold: float = 0.35
