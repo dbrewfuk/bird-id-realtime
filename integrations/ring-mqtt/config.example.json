@@ -1,0 +1,9 @@
+{
+  "mqtt_url": "mqtt://host.docker.internal:1883",
+  "livestream_user": "ringstream",
+  "livestream_pass": "change-this-password",
+  "enable_cameras": true,
+  "enable_modes": false,
+  "enable_panic": false
+}
+

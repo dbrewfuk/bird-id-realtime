@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+*.pt
+app/models/*.onnx
+app/models/config.json
+app/models/preprocessor_config.json

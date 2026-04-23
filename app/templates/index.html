@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bird ID</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body data-frame-interval="{{ frame_interval_ms }}">
+
+    <!-- Full-screen camera viewport -->
+    <div class="viewport">
+      <video id="video" autoplay muted playsinline></video>
+      <img id="stream-preview" alt="Stream feed" hidden />
+
+      <div id="bbox" class="bbox" hidden>
+        <div id="bbox-label" class="bbox-label"></div>
+      </div>
+
+      <!-- Top bar -->
+      <header class="top-bar">
+        <div class="wordmark">
+          <svg class="wordmark-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21 3L12.5 8.5C11 6 8.5 4.5 6 5C3 5.5 1.5 8 2 11C2.5 14 5 15.5 7.5 15C7.5 15 8 17 10 18.5C12 20 15 20 17 18.5L21 3Z"/>
+          </svg>
+          Bird ID
+        </div>
+        <div class="top-right">
+          <span id="status-dot" class="status-dot"></span>
+          <button id="sightings-toggle" class="sightings-btn">
+            Sightings
+            <span id="sighting-count" class="count-chip" hidden>0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Bottom HUD -->
+      <div class="hud">
+        <div class="hud-id">
+          <div class="hud-name-row">
+            <span id="bird-name">Waiting…</span>
+            <span id="bird-confidence" class="conf-pill">—</span>
+          </div>
+          <p id="guidance-text" class="hud-guidance">Start the camera to begin.</p>
+        </div>
+
+        <ul id="prediction-list" class="hud-candidates"></ul>
+
+        <div class="hud-controls">
+          <div id="camera-controls" class="hud-sliders" hidden></div>
+          <div class="hud-selects">
+            <select id="source-mode" class="hud-select">
+              <option value="camera">Browser camera</option>
+              <option value="stream">Ring stream</option>
+            </select>
+            <div id="camera-device-field">
+              <select id="camera-device" class="hud-select">
+                <option value="">Default camera</option>
+              </select>
+            </div>
+            <div id="stream-url-field" hidden>
+              <input id="stream-url" class="hud-input" type="text" placeholder="rtsp://…" />
+            </div>
+          </div>
+          <button id="source-toggle" class="start-btn">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sightings drawer -->
+    <aside id="sightings-drawer" class="sightings-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div>
+          <p class="drawer-eyebrow">Above 50% confidence</p>
+          <h2 class="drawer-title">Sightings</h2>
+        </div>
+        <button id="close-drawer" class="close-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div id="sightings-log" class="sightings-log">
+        <p id="sightings-empty" class="sightings-empty">No sightings yet.</p>
+      </div>
+      <div class="drawer-footer">
+        <button id="clear-sightings" class="clear-btn">Clear all</button>
+      </div>
+    </aside>
+
+    <canvas id="capture-canvas" hidden></canvas>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

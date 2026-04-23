@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bird-id-realtime"
+version = "0.1.0"
+description = "Realtime bird identification app from a live video feed"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.32.0",
+  "jinja2>=3.1.4",
+  "python-multipart>=0.0.12",
+  "numpy>=2.1.0",
+  "pillow>=11.0.0",
+  "onnxruntime>=1.20.0",
+  "pydantic-settings>=2.8.0",
+]
+
+[tool.uvicorn]
+factory = false
